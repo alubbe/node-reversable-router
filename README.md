@@ -1,11 +1,6 @@
-# reversable-router
+# Named Routes for Node.js
 
-***
-The project is without an active maintainer and is looking for one. Please see  [issue #6](https://github.com/web-napopa/node-reversable-router/issues/6) for discussion on the topic.
-***
-
-
-`node.js` module for routing HTTP requests. Can be used standalone or as part of [express.js](http://expressjs.com/) framework.
+A `node.js` module for naming HTTP routes. Can be used with the [express.js](http://expressjs.com/) framework or independently as standalone. It is based on the amazing work of antitoxic's [node-reversable-router](https://github.com/web-napopa/node-reversable-router).
 
 **Feature overview**:
  - Support for named routes
@@ -197,7 +192,7 @@ url('admin.user.edit', {id:2, _masked: ['any','thing'], sort: 'name', 'order': '
 ## License
 (The MIT License)
 
-Copyright (c) 2012 Anton Stoychev <anton@napopa.com>
+Copyright (c) 2014 Andreas Lubbe <npm@lubbe.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the
 rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
