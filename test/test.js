@@ -117,6 +117,16 @@ module.exports = {
 
         expect(spy.called).to.equal(true);
 
+        self.router.add('post', '/todo/:user/:list/:id', spy, {
+          'name': 'ajax'
+        });
+
+        expect(self.router.build('ajax', {
+          'user': 'foo',
+          'list': null,
+          'id': null
+        })).to.equal('/todo/foo');
+
         self.router.add('get', '/admin/(user/(edit/:id/)(album/:albumId/):session/)test', spy, {
           name: 'optionals'
         });

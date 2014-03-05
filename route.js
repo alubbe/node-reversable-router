@@ -222,7 +222,7 @@ Route.prototype.generate = function (userParams) {
   userParams._masked = userParams._masked == undefined ? [] : userParams._masked;
   // Check what parameters were provided by the user
   knownNamedParameters.forEach(function (name) {
-    if (userParams[name] == undefined) return;
+    if (userParams[name] === undefined) return;
     foundParameters.push(name);
   })
 
@@ -239,7 +239,12 @@ Route.prototype.generate = function (userParams) {
 
   // Replace named parameters
   foundParameters.forEach(function (name) {
-    url = url.replace(':' + name, userParams[name]);
+    var parameter = userParams[name];
+    if(parameter !== null){
+      url = url.replace(':' + name, parameter);
+    } else {
+      url = url.replace(new RegExp(':' + name + '/|/:' + name), '');
+    };
   })
 
   // Replace masked/unnamed parameters, account for masked parameters that could have been removed in the optional parts
@@ -281,6 +286,8 @@ Route.prototype.generate = function (userParams) {
     url = url.replace('*', lastMaskReplacement);
   }
 
+  if (url === "") return "/";
+  if (url[url.length - 1] === "/") return url.slice(0,-1);
   return url;
 }
 
