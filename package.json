@@ -1,19 +1,16 @@
 {
   "name": "named-routes",
   "description": "HTTP request router with named reversable routes",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Andreas Lubbe",
     "email": "npm@lubbe.org"
   },
   "main": "./router.js",
-  "dependencies": {
-    "xregexp": "*",
-    "methods": "0.0.1"
-  },
   "keywords": [
     "named",
     "routes",
+    "i18n",
     "router",
     "reversable",
     "express",
@@ -29,6 +26,10 @@
   },
   "scripts": {
     "test": "mocha test"
+  },
+  "dependencies": {
+    "xregexp": "*",
+    "methods": "0.0.1"
   },
   "devDependencies": {
     "mocha": "~1.14.0",
