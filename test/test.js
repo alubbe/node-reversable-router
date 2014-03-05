@@ -165,9 +165,10 @@ module.exports = {
           name: 'admin.user.edit'
         });
 
-        req.path = '/admin/any/user/thing/2';
-        req.params = {};
-
+        req = {
+          method: 'get',
+          path: '/admin/any/user/thing/2'
+        };
         self.router.dispatch(req, {}, next); // the next route shouldn't be called
 
         expect(spy.called).to.equal(true);
@@ -182,8 +183,10 @@ module.exports = {
           name: 'admin.user.edit2'
         });
 
-        req.path = '/admin/any/user/thing/2/albums/sort/name/order/desc';
-        req.params = {};
+        req = {
+          method: 'get',
+          path: '/admin/any/user/thing/2/albums/sort/name/order/desc'
+        };
 
         spy.reset();
         next.reset();
