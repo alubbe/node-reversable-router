@@ -241,6 +241,8 @@ Route.prototype.generate = function (userParams) {
   foundParameters.forEach(function (name) {
     var parameter = userParams[name];
     if(parameter !== null){
+      // ignore everything beyond '#'
+      parameter = parameter.toString().split("#")[0];
       url = url.replace(':' + name, parameter);
     } else {
       url = url.replace(new RegExp(':' + name + '/|/:' + name), '');
