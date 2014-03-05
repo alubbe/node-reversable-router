@@ -61,28 +61,32 @@ module.exports = {
       'optionals': function(){
         var
           self = this,
-          spy = sinon.spy(),
-          req = {
-            method: 'post',
-            path: ''
-          };
+          spy = sinon.spy();
 
         self.router.add('post', '/admin/(user/(edit/:id/)(album/:albumId/):session/)test', spy);
 
-        req.path = '/admin/user/edit/4/album/2/qwjdoqiwdasdj12asdiaji198a/test';
-        req.params = {};
+        var req  = {
+          method: 'post',
+          path: '/admin/user/edit/4/album/2/qwjdoqiwdasdj12asdiaji198a/test'
+        };
         self.router.dispatch(req, {}, function deadend(){ });
 
-        req.path = '/admin/user/edit/4/qwjdoqiwdasdj12asdiaji198a/test';
-        req.params = {};
+        req  = {
+          method: 'post',
+          path: '/admin/user/edit/4/qwjdoqiwdasdj12asdiaji198a/test'
+        };
         self.router.dispatch(req, {}, function deadend(){ });
 
-        req.path = '/admin/user/album/2/qwjdoqiwdasdj12asdiaji198a/test';
-        req.params = {};
+        req  = {
+          method: 'post',
+          path: '/admin/user/album/2/qwjdoqiwdasdj12asdiaji198a/test'
+        };
         self.router.dispatch(req, {}, function deadend(){ });
 
-        req.path = '/admin/test';
-        req.params = {};
+        req  = {
+          method: 'post',
+          path: '/admin/test'
+        };
         self.router.dispatch(req, {}, function deadend(){ });
 
         expect(spy.callCount).to.equal(4);
