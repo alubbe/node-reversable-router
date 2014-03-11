@@ -294,6 +294,7 @@ Router.prototype.extendExpress = function (app) {
       return this._router.add(method, path, args, options);
     }
   });
+
   app.route = function (path, name, definitions) {
     this._routingContext = [path, name];
     if (typeof definitions == 'function') {
@@ -307,6 +308,16 @@ Router.prototype.extendExpress = function (app) {
       app[method].apply(app, args);
     }
     this._routingContext = [];
-  }
+  };
+
+  app.all = function() {
+    var methods = require('methods');
+    var args = [].slice.call(arguments);
+
+    return methods.forEach(function(method){
+      app[method].apply(app, args);
+    });
+  };
+
   return this;
 }
