@@ -1,7 +1,7 @@
 {
   "name": "named-routes",
   "description": "HTTP request router with named reversable routes",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": {
     "name": "Andreas Lubbe",
     "email": "npm@lubbe.org"
