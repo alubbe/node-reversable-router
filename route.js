@@ -30,6 +30,10 @@ Route.prototype.setOptions = function (options) {
  */
 Route.prototype.compile = function () {
   var path = this.path;
+
+  // ensure route starts with '/'
+  if(path[0] !== '/') path = '/' + path;
+
   // force all inner `masked` parameters to be required
   path = path.replace(/\/\*\*/g, '/*');
 
