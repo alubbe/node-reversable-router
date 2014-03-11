@@ -86,7 +86,7 @@ Router.prototype.add = function (method, path, callbacks, options) {
     var route = new Route(path, options);
     route.__defineGetter__('name', function() {return this.options.name});
     this.routesByMethod[method] = this.routesByMethod[method] || [];
-    this.routesByMethod[method].unshift(route);
+    this.routesByMethod[method].push(route);
     this.routesByMethodAndPath[method][path] = route;
     if (options.name != undefined) {
       this.routesByNameAndMethod[options.name] = this.routesByNameAndMethod[options.name] || {};
