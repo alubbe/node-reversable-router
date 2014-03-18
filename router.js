@@ -321,3 +321,40 @@ Router.prototype.extendExpress = function (app) {
 
   return this;
 }
+
+Router.prototype.extendExpress4 = function (app) {
+  var methods = require('methods');
+  app._routes = this;
+  app._routingContext = [];
+
+  methods.forEach(function (method) {
+    var originalMethod = app[method];
+    app[method] = function (key) {
+      if ('get' == method && 1 == arguments.length && typeof key == 'string') return this.set(key);
+      var args = this._routingContext.concat([].slice.call(arguments));
+      var path = args[0];
+      var name = "";
+      // Check if second argument is the route name
+      if (typeof args[1] == 'string') {
+        name = args[1];
+        args[1] = function(req, res, next){
+          req.route.name = name;
+          next();
+        };
+      }
+      this._routes.add(method, path, [], {name: name});
+      return originalMethod.apply(this, args);
+    }
+  });
+
+  app.all = function() {
+    var methods = require('methods');
+    var args = [].slice.call(arguments);
+
+    return methods.forEach(function(method){
+      app[method].apply(app, args);
+    });
+  };
+
+  return this;
+}
