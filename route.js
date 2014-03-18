@@ -31,6 +31,9 @@ Route.prototype.setOptions = function (options) {
 Route.prototype.compile = function () {
   var path = this.path;
 
+  // ensure '*' is interpreted correctly
+  if(path === '*') path = '/*';
+
   // force all inner `masked` parameters to be required
   path = path.replace(/\/\*\*/g, '/*');
 
@@ -47,9 +50,6 @@ Route.prototype.compile = function () {
 
   //escape full stops
   path = path.replace(/\./g, '\\.');
-
-  // ensure '*' is interpreted correctly
-  if(path === '*') path = '/*';
 
   // change wildcards , the `*` (calling them `masked` parameters) to masked0, masked1...
   var maskedWildcardName = '';
