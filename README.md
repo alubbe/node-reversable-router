@@ -45,6 +45,8 @@ app.get('/admin/user/:id', 'admin.user.edit', function(req, res, next){
     // the names can also be accessed here:
     var url = app.namedRoutes.build('admin.user.edit', {id: 2}); // /admin/user/2
 });
+
+app.listen(3000);
 ```
 
 #### As a standalone
