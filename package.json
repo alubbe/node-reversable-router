@@ -32,9 +32,9 @@
     "methods": "0.0.1"
   },
   "devDependencies": {
-    "mocha": "~1.14.0",
     "expect.js": "~0.2.0",
-    "sinon": "~1.7.3",
-    "express": "~3.4.4"
+    "express": "^4.12.3",
+    "mocha": "~1.14.0",
+    "sinon": "~1.7.3"
   }
 }
