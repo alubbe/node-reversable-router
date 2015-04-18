@@ -24,12 +24,12 @@ npm install named-routes
 
 ### Example
 #### As a replacement for express framework router
-// in the view files:
+In the view files:
 ```js
 url('admin.user.edit', {id: 2}) // /admin/user/2
 ```
 
-//... and in the server config
+... and in the server config:
 ```js
 var express = require('express');
 var app = express();
@@ -45,6 +45,7 @@ app.get('/admin/user/:id', 'admin.user.edit', function(req, res, next){
     // the names can also be accessed here:
     var url = app.namedRoutes.build('admin.user.edit', {id: 2}); // /admin/user/2
 });
+```
 
 #### As a standalone
 
