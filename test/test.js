@@ -17,7 +17,7 @@ module.exports = {
         this.router.extendExpress(this.app);
         this.router.registerAppHelpers(this.app);
 
-        expect(this.app._router).to.be(this.router);
+        expect(this.app.namedRoutes).to.be(this.router);
         expect(this.app._routingContext).to.be.ok();
         expect(this.app.get).to.be.a('function');
         expect(this.app['delete']).to.be.a('function');

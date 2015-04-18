@@ -270,7 +270,7 @@ Router.prototype.dispatch = function (req, res, next) {
  */
 Router.prototype.extendExpress = function (app) {
   var methods = require('methods');
-  app._router = this;
+  app.namedRoutes = this;
   app._routingContext = [];
 
   methods.forEach(function (method) {
@@ -288,7 +288,7 @@ Router.prototype.extendExpress = function (app) {
           next();
         };
       }
-      this._routes.add(method, path, [], {name: name});
+      this.namedRoutes.add(method, path, [], {name: name});
       return originalMethod.apply(this, args);
     }
   });

@@ -34,7 +34,7 @@ router.extendExpress(app);
 router.registerAppHelpers(app);
 
 app.get('/admin/user/:id', 'admin.user.edit', function(req, res, next){
-    var url = app._router.build('admin.user.edit', {id: 2}); // /admin/user/2
+    var url = app.namedRoutes.build('admin.user.edit', {id: 2}); // /admin/user/2
 });
 
 //.. and a helper in the view files:
@@ -97,9 +97,9 @@ url('todo.user.list.id', {user: 'foo', list: 93, id: 1337}) // '/todo/foo/93/133
 url('todo.user.list.id', {user: 'foo', list: 93}) // Throws error, missing parameters
 
 // anywhere else:
-app._router.build('about') // '/about'
-app._router.build('todo.user.list.id', {user: 'foo', list: 93, id: 1337}) // '/todo/foo/93/1337'
-app._router.build('todo.user.list.id', {user: 'foo', list: 93}) // Throws error, missing parameters
+app.namedRoutes.build('about') // '/about'
+app.namedRoutes.build('todo.user.list.id', {user: 'foo', list: 93, id: 1337}) // '/todo/foo/93/1337'
+app.namedRoutes.build('todo.user.list.id', {user: 'foo', list: 93}) // Throws error, missing parameters
 ```
 
 As a standalone:
@@ -127,7 +127,7 @@ var getTodo = '!{url('todo.user.list.id', {user: 'foo', list: null, id: null})}'
 $http.get( getTodo + '/' + listID + '/' + id, function(){...})
 ```
 
-The above assumes you are working in an express view. If you are not, swap out ```url``` with  ```app._router.build``` if you are in express but outside the view and ```app.get``` with ```router.add``` and ```url``` with ```router.build``` if you using module standalone.
+The above assumes you are working in an express view. If you are not, swap out ```url``` with  ```app.namedRoutes.build``` if you are in express but outside the view and ```app.get``` with ```router.add``` and ```url``` with ```router.build``` if you using module standalone.
 
 ### Full support for optional parts of the URL
 You can define routes like this:
