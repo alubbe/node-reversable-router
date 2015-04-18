@@ -1,6 +1,6 @@
 # Named Routes for Node.js
 
-A `node.js` module for naming HTTP routes. Can be used with the [express.js](http://expressjs.com/) framework or independently as standalone. It is based on the amazing work of antitoxic's [node-reversable-router](https://github.com/web-napopa/node-reversable-router).
+A `node.js` module for naming HTTP routes. Can be used with the [express.js](http://expressjs.com/) framework or independently as standalone. Originally based on [node-reversable-router](https://github.com/web-napopa/node-reversable-router).
 
 **Feature overview**:
  - Support for named routes
