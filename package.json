@@ -1,6 +1,6 @@
 {
   "name": "named-routes",
-  "description": "HTTP request router with named reversable routes",
+  "description": "Named routes for node.js. Works with express and independently",
   "version": "2.0.0",
   "author": {
     "name": "Andreas Lubbe",
