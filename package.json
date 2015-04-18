@@ -20,7 +20,6 @@
     "type": "git",
     "url": "git://github.com/alubbe/named-routes"
   },
-  "readme": "Named routes for node.js. Works with express and independently",
   "bugs": {
     "url": "https://github.com/alubbe/named-routes/issues"
   },
