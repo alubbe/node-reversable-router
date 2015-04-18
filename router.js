@@ -274,60 +274,6 @@ Router.prototype.extendExpress = function (app) {
   app._routingContext = [];
 
   methods.forEach(function (method) {
-    app[method] = function (key) {
-      if ('get' == method && 1 == arguments.length && typeof key == 'string') return this.set(key);
-      var args = this._routingContext.concat([].slice.call(arguments));
-      // Check if last argument are the route options
-      var options = args[args.length - 1];
-      if (typeof options != 'function') {
-        args.pop();
-      } else {
-        options = {};
-      }
-
-      var path = args.shift();
-      // Check if second argument is the route name
-      if (typeof args[0] == 'string') {
-        options.name = args.shift();
-      }
-      if (!this._usedRouter) this.use(this.router);
-      return this._router.add(method, path, args, options);
-    }
-  });
-
-  app.route = function (path, name, definitions) {
-    this._routingContext = [path, name];
-    if (typeof definitions == 'function') {
-      definitions();
-      this._routingContext = [];
-      return;
-    }
-    for (method in definitions) {
-      var args = definitions[method];
-      args = Array.isArray(args) ? args : [args];
-      app[method].apply(app, args);
-    }
-    this._routingContext = [];
-  };
-
-  app.all = function() {
-    var methods = require('methods');
-    var args = [].slice.call(arguments);
-
-    return methods.forEach(function(method){
-      app[method].apply(app, args);
-    });
-  };
-
-  return this;
-}
-
-Router.prototype.extendExpress4 = function (app) {
-  var methods = require('methods');
-  app._routes = this;
-  app._routingContext = [];
-
-  methods.forEach(function (method) {
     var originalMethod = app[method];
     app[method] = function (key) {
       if ('get' == method && 1 == arguments.length && typeof key == 'string') return this.set(key);

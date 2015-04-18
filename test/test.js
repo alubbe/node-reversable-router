@@ -23,7 +23,6 @@ module.exports = {
         expect(this.app['delete']).to.be.a('function');
         expect(this.app.post).to.be.a('function');
         expect(this.app.put).to.be.a('function');
-        expect(this.app.route).to.be.a('function');
         expect(this.app.locals.url).to.be.a('function');
       },
       'afterEach': function(){
