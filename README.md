@@ -1,6 +1,6 @@
-# Named Routes for Node.js
+# Named Routes for node.js
 
-A `node.js` module for naming HTTP routes. Can be used with the [express.js](http://expressjs.com/) framework or independently as standalone. Originally based on antitoxic's  [node-reversable-router](https://github.com/web-napopa/node-reversable-router).
+A node.js module for naming HTTP routes. Can be used with the [express.js](http://expressjs.com/) framework or independently as standalone. Originally based on antitoxic's  [node-reversable-router](https://github.com/web-napopa/node-reversable-router).
 
 **Feature overview**:
  - Support for named routes
@@ -50,6 +50,9 @@ app.get('/admin/user/:id', 'admin.user.edit', function(req, res, next){
 
 app.listen(3000);
 ```
+Please note: in this mode, route paths are matched by express.
+You can use these patterns: http://expressjs.com/guide/routing.html#route-paths
+
 
 #### As a standalone
 
@@ -57,13 +60,13 @@ app.listen(3000);
 var Router = require('named-routes')();
 var router = new Router();
 
-router.add('get', '/admin/user/:id', function() {
-	var url = router.build('admin.user.edit', {id: 2}); // /admin/user/2
+router.add('get', '/admin/user/:id', function(req, res, next) {
+    var url = router.build('admin.user.edit', {id: 2}); // /admin/user/2
 }, {
     name: 'admin.user.edit'
 });
 
-//...
+//... in a request handler
 router.dispatch(req);
 ```
 
@@ -94,8 +97,8 @@ app.namedRoutes.build('todo.user.list.id', {user: 'foo', list: 93}) // Throws er
 As a standalone:
 
 ```js
-router.add('get', '/about', function() {...}, {name:'about'})
-router.add('get', '/todo/:user/:list/:id', function() {...}, {name:'todo.user.list.id'})
+router.add('get', '/about', function(req, res, next) {...}, {name:'about'})
+router.add('get', '/todo/:user/:list/:id', function(req, res, next) {...}, {name:'todo.user.list.id'})
 
 router.build('about') // '/about'
 router.build('todo.user.list.id', {user: 'foo', list: 93, id: 1337}) // '/todo/foo/93/1337'
@@ -118,11 +121,14 @@ $http.get( getTodo + '/' + listID + '/' + id, function(){...})
 
 The above assumes you are working in an express view. If you are not, swap out ```url``` with  ```app.namedRoutes.build``` if you are in express but outside the view and ```app.get``` with ```router.add``` and ```url``` with ```router.build``` if you using module standalone.
 
+
+## Features exclusive to stand-alone mode
+
 ### Full support for optional parts of the URL
 You can define routes like this:
 
 ```js
-app.get('/admin/(user/(edit/:id/)(album/:albumId/):session/)test', 'admin', function(req, res, next){
+router.add('get', '/admin/(user/(edit/:id/)(album/:albumId/):session/)test', 'admin', function(req, res, next){
     console.log(req.params);
 });
 ```
@@ -157,7 +163,7 @@ Such routes will be matched with direct check for equallity without the need for
 
 ### Anonymous `*` parameters inside the path
 ```js
-app.get('/admin/*/user/*/:id/', 'admin.user.edit', function(req, res, next){
+router.add('get', '/admin/*/user/*/:id/', 'admin.user.edit', function(req, res, next) {
     console.log(req.params)
 });
 ```
@@ -176,10 +182,10 @@ url('admin.user.edit', {id:2, _masked: ['any','thing']})
 
 ### Converting the trailing `*` anonymous parameter to multiple `name:value` parameters
 ```js
-app.get('/admin/*/user/*/:id/albums/*', 'admin.user.edit', function(req, res, next){
+router.add('get', '/admin/*/user/*/:id/albums/*', 'admin.user.edit', function(req, res, next) {
     console.log(req.params)
 }, {
-	wildcardInPairs: true
+    wildcardInPairs: true
 });
 ```
 Requesting: `/admin/any/user/thing/2/albums/sort/name/order/desc` will output:
