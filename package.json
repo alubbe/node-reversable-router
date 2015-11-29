@@ -27,13 +27,13 @@
     "test": "mocha test"
   },
   "dependencies": {
-    "xregexp": "*",
-    "methods": "0.0.1"
+    "methods": "^1.1.1",
+    "xregexp": "^3.0.0"
   },
   "devDependencies": {
-    "expect.js": "~0.2.0",
+    "expect.js": "^0.3.1",
     "express": "^4.12.3",
-    "mocha": "~1.14.0",
-    "sinon": "~1.7.3"
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2"
   }
 }
