@@ -2,6 +2,7 @@ var
   expect = require('expect.js'),
   sinon = require('sinon'),
   express = require('express'),
+  request = require('supertest'),
   Router = require('../router.js');
 
 module.exports = {
@@ -9,14 +10,19 @@ module.exports = {
     'beforeEach': function(){
       this.router = new Router();
     },
+    'afterEach': function(){
+      this.router = null;
+    },
     'Express.js': {
       'beforeEach': function(){
-        this.app = new express();
-      },
-      'extend': function(){
+        this.app = express();
         this.router.extendExpress(this.app);
         this.router.registerAppHelpers(this.app);
-
+      },
+      'afterEach': function(){
+        this.app = null;
+      },
+      'extend': function(){
         expect(this.app.namedRoutes).to.be(this.router);
         expect(this.app._routingContext).to.be.ok();
         expect(this.app.get).to.be.a('function');
@@ -25,9 +31,21 @@ module.exports = {
         expect(this.app.put).to.be.a('function');
         expect(this.app.locals.url).to.be.a('function');
       },
-      'afterEach': function(){
-        this.app = null;
-      }
+      'matches': function(done){
+        this.app.get('/admin/user/:id', 'admin.user.edit', function(req,res) {
+          res.sendStatus(200);
+        });
+
+        request(this.app).get('/admin/user/1')
+        .expect(200, function(err) {
+          if (err) return done(err);
+          request(this.app).post('/admin/user/1')
+          .expect(404, function(err) {
+            if (err) return done(err);
+            done();
+          })
+        })
+      },
     },
     'Standalone': {
       'matches': function(){
@@ -210,8 +228,5 @@ module.exports = {
         expect(spy.callCount).to.equal(1);
       },
     },
-    'afterEach': function(){
-      this.router = null;
-    }
   }
 };
