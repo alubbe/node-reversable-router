@@ -12,6 +12,8 @@ function Router(options) {
   var self = this;
   options = options || {};
 
+  this.expressMode = false;
+
   this.routesByMethod = [];
   this.routesByMethodAndPath = {};
   this.routesByNameAndMethod = {};
@@ -85,6 +87,9 @@ Router.prototype.add = function (method, path, callbacks, options) {
   if (this.routesByMethodAndPath[method][path] == undefined) {
     var route = new Route(path, options);
     route.__defineGetter__('name', function() {return this.options.name});
+    if(this.expressMode) {
+      route.generate = require("path-to-regexp").compile(path);
+    }
     this.routesByMethod[method] = this.routesByMethod[method] || [];
     this.routesByMethod[method].push(route);
     this.routesByMethodAndPath[method][path] = route;
@@ -270,6 +275,7 @@ Router.prototype.dispatch = function (req, res, next) {
  */
 Router.prototype.extendExpress = function (app) {
   var methods = require('methods');
+  this.expressMode = true;
   app.namedRoutes = this;
   app._routingContext = [];
 

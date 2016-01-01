@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "methods": "^1.1.1",
+    "path-to-regexp": "^1.2.1",
     "xregexp": "^3.0.0"
   },
   "devDependencies": {

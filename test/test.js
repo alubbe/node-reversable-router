@@ -22,6 +22,11 @@ module.exports = {
       'afterEach': function(){
         this.app = null;
       },
+      'build': function() {
+        this.app.get('/:locale(en)', 'locale', function(req,res) {});
+        expect(this.router.build('locale', {locale: 'en'})).to.equal('/en');
+        expect(function(){this.router.build('locale', {locale: 'de'})}).to.throwError();
+      },
       'extend': function(){
         expect(this.app.namedRoutes).to.be(this.router);
         expect(this.app._routingContext).to.be.ok();
