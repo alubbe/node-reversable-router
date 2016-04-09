@@ -87,8 +87,8 @@ Router.prototype.add = function (method, path, callbacks, options) {
   if (this.routesByMethodAndPath[method][path] == undefined) {
     var route = new Route(path, options);
     route.__defineGetter__('name', function() {return this.options.name});
-    if(this.expressMode) {
-      route.generate = require("path-to-regexp").compile(path);
+    if (this.expressMode) {
+      route.generate = expressGenerateRoute(require("path-to-regexp").compile(path));
     }
     this.routesByMethod[method] = this.routesByMethod[method] || [];
     this.routesByMethod[method].push(route);
@@ -103,6 +103,21 @@ Router.prototype.add = function (method, path, callbacks, options) {
 
   this.callbacksByPathAndMethod[path] = this.callbacksByPathAndMethod[path] || {};
   this.callbacksByPathAndMethod[path][method] = flatten(callbacks);
+}
+
+var expressGenerateRoute = function(compile) {
+  return function(userParams) {
+    var foundAtLeastOneNull = false;
+    var keys = Object.keys(userParams);
+    for (var i = 0; i < keys.length; i++) {
+      if (userParams[keys[i]] === null) {
+        userParams[keys[i]] = "__NULL_PLACEHOLDER__";
+        foundAtLeastOneNull = true;
+      }
+    }
+    var routeName = compile(userParams);
+    return foundAtLeastOneNull ? routeName.replace(/\/__NULL_PLACEHOLDER__/g, "") : routeName;
+  }
 }
 
 /**

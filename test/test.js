@@ -22,10 +22,19 @@ module.exports = {
       'afterEach': function(){
         this.app = null;
       },
-      'build': function() {
+      'build1': function() {
         this.app.get('/:locale(en)', 'locale', function(req,res) {});
         expect(this.router.build('locale', {locale: 'en'})).to.equal('/en');
         expect(function(){this.router.build('locale', {locale: 'de'})}).to.throwError();
+      },
+      'build2': function() {
+        this.app.get('/doctors/:speciality/:governorate', 'search.doctor', function(req,res) {});
+        expect(this.router.build('search.doctor', {speciality: null, governorate: null})).to.equal('/doctors');
+        expect(this.router.build('search.doctor', {speciality: "people", governorate: null})).to.equal('/doctors/people');
+        expect(this.router.build('search.doctor', {speciality: "people", governorate: "peter"})).to.equal('/doctors/people/peter');
+        expect(function(){this.router.build('search.doctor', {speciality: null})}).to.throwError();
+        expect(function(){this.router.build('search.doctor', {governorate: null})}).to.throwError();
+        expect(function(){this.router.build('search.doctor', {})}).to.throwError();
       },
       'extend': function(){
         expect(this.app.namedRoutes).to.be(this.router);
