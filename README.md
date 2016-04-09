@@ -40,6 +40,8 @@ router.extendExpress(app);
 router.registerAppHelpers(app);
 
 app.get('/admin/user/:id', 'admin.user.edit', function(req, res, next){
+    // for POST, PUT, DELETE, etc. replace 'get' with 'post', 'put', 'delete', etc.
+
     //... implementation
 
     // the names can also be accessed here:
