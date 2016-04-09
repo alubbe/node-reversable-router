@@ -45,7 +45,7 @@ module.exports = {
         expect(this.app.put).to.be.a('function');
         expect(this.app.locals.url).to.be.a('function');
       },
-      'matches': function(done){
+      'matches GET': function(done){
         this.app.get('/admin/user/:id', 'admin.user.edit', function(req,res) {
           res.sendStatus(200);
         });
@@ -54,6 +54,22 @@ module.exports = {
         .expect(200, function(err) {
           if (err) return done(err);
           request(this.app).post('/admin/user/1')
+          .expect(404, function(err) {
+            if (err) return done(err);
+            done();
+          })
+        })
+      },
+      'matches POST': function(done){
+        this.app.post('/admin/user/:id', 'admin.user.edit', function(req,res) {
+          console.log(req);
+          res.sendStatus(200);
+        });
+
+        request(this.app).post('/admin/user/1')
+        .expect(200, function(err) {
+          if (err) return done(err);
+          request(this.app).get('/admin/user/1')
           .expect(404, function(err) {
             if (err) return done(err);
             done();
