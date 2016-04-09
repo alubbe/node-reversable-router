@@ -62,7 +62,6 @@ module.exports = {
       },
       'matches POST': function(done){
         this.app.post('/admin/user/:id', 'admin.user.edit', function(req,res) {
-          console.log(req);
           res.sendStatus(200);
         });
 
