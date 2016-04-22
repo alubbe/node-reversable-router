@@ -108,11 +108,13 @@ Router.prototype.add = function (method, path, callbacks, options) {
 var expressGenerateRoute = function(compile) {
   return function(userParams) {
     var foundAtLeastOneNull = false;
-    var keys = Object.keys(userParams);
-    for (var i = 0; i < keys.length; i++) {
-      if (userParams[keys[i]] === null) {
-        userParams[keys[i]] = "__NULL_PLACEHOLDER__";
-        foundAtLeastOneNull = true;
+    if (userParams) {
+      var keys = Object.keys(userParams);
+      for (var i = 0; i < keys.length; i++) {
+        if (userParams[keys[i]] === null) {
+          userParams[keys[i]] = "__NULL_PLACEHOLDER__";
+          foundAtLeastOneNull = true;
+        }
       }
     }
     var routeName = compile(userParams);

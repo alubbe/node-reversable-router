@@ -23,11 +23,15 @@ module.exports = {
         this.app = null;
       },
       'build1': function() {
+        this.app.get('/users', 'users', function(req,res) {});
+        expect(this.router.build('users')).to.equal('/users');
+      },
+      'build2': function() {
         this.app.get('/:locale(en)', 'locale', function(req,res) {});
         expect(this.router.build('locale', {locale: 'en'})).to.equal('/en');
         expect(function(){this.router.build('locale', {locale: 'de'})}).to.throwError();
       },
-      'build2': function() {
+      'build3': function() {
         this.app.get('/doctors/:speciality/:governorate', 'search.doctor', function(req,res) {});
         expect(this.router.build('search.doctor', {speciality: null, governorate: null})).to.equal('/doctors');
         expect(this.router.build('search.doctor', {speciality: "people", governorate: null})).to.equal('/doctors/people');
