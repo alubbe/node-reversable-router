@@ -55,6 +55,17 @@ app.listen(3000);
 Please note: in this mode, route paths are matched by express.
 You can use these patterns: http://expressjs.com/guide/routing.html#route-paths
 
+##### Extending express4 routers
+```js
+var searchRouter = express.Router();
+router.extendExpress(searchRouter);
+searchRouter.post('/users', 'users', function(){...});
+app.use('/search', searchRouter);
+```
+As express routers are designed to be isolated components, calling
+`url("users")` will return `"/users"`, not `"/search/users"`. For more
+information, see https://github.com/alubbe/named-routes/issues/13.
+
 
 #### As a standalone
 
