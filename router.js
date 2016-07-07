@@ -14,7 +14,7 @@ function Router(options) {
 
   this.expressMode = false;
 
-  this.routesByMethod = [];
+  this.routesByMethod = {};
   this.routesByMethodAndPath = {};
   this.routesByNameAndMethod = {};
   this.callbacksByPathAndMethod = {};
