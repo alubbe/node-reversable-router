@@ -61,10 +61,9 @@ Router.prototype.match = function (req) {
  * Registers new route
  * @param method
  * @param path
- * @param callbacks
- * @param options
+ * @param callback
  */
-Router.prototype.add = function (method, path, callbacks, options) {
+Router.prototype.add = function (method, path, callback) {
   var hasOptions = (typeof callback !== 'function' && !Array.isArray(callback));
   var callbacks = [].slice.call(arguments, 2);
   var options = {};
