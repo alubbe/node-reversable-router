@@ -73,10 +73,8 @@ information, see https://github.com/alubbe/named-routes/issues/13.
 var Router = require('named-routes')();
 var router = new Router();
 
-router.add('get', '/admin/user/:id', function(req, res, next) {
+router.add('get', '/admin/user/:id', 'admin.user.edit', function(req, res, next) {
     var url = router.build('admin.user.edit', {id: 2}); // /admin/user/2
-}, {
-    name: 'admin.user.edit'
 });
 
 //... in a request handler
@@ -110,8 +108,8 @@ app.namedRoutes.build('todo.user.list.id', {user: 'foo', list: 93}) // Throws er
 As a standalone:
 
 ```js
-router.add('get', '/about', function(req, res, next) {...}, {name:'about'})
-router.add('get', '/todo/:user/:list/:id', function(req, res, next) {...}, {name:'todo.user.list.id'})
+router.add('get', '/about', 'about', function(req, res, next) {...})
+router.add('get', '/todo/:user/:list/:id', 'todo.user.list.id', function(req, res, next) {...})
 
 router.build('about') // '/about'
 router.build('todo.user.list.id', {user: 'foo', list: 93, id: 1337}) // '/todo/foo/93/1337'
@@ -195,10 +193,8 @@ url('admin.user.edit', {id:2, _masked: ['any','thing']})
 
 ### Converting the trailing `*` anonymous parameter to multiple `name:value` parameters
 ```js
-router.add('get', '/admin/*/user/*/:id/albums/*', 'admin.user.edit', function(req, res, next) {
+router.add('get', '/admin/*/user/*/:id/albums/*', {name: 'admin.user.edit', wildcardInPairs: true}, function(req, res, next) {
     console.log(req.params)
-}, {
-    wildcardInPairs: true
 });
 ```
 Requesting: `/admin/any/user/thing/2/albums/sort/name/order/desc` will output:

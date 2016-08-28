@@ -65,22 +65,20 @@ Router.prototype.match = function (req) {
  * @param options
  */
 Router.prototype.add = function (method, path, callbacks, options) {
-  function flatten(arr, ret) {
-    var ret = ret || []
-      , len = arr.length;
-    for (var i = 0; i < len; ++i) {
-      if (Array.isArray(arr[i])) {
-        flatten(arr[i], ret);
-      } else {
-        ret.push(arr[i]);
-      }
-    }
-    return ret;
-  }
+  var hasOptions = (typeof callback !== 'function' && !Array.isArray(callback));
+  var callbacks = [].slice.call(arguments, 2);
+  var options = {};
 
-  callbacks = [callbacks]
   method = method.toLowerCase();
-  options = options || {};
+
+  if (hasOptions) {
+    if (typeof callback === 'string') {
+      options['name'] = callback;
+    } else {
+      options = callback;
+    }
+    callbacks.shift();
+  }
 
   this.routesByMethodAndPath[method] = this.routesByMethodAndPath[method] || {};
   options.caseSensitive = options.caseSensitive == undefined ? this.caseSensitive : options.caseSensitive;
@@ -311,7 +309,7 @@ Router.prototype.extendExpress = function (app) {
           next();
         };
       }
-      this.namedRoutes.add(method, path, [], {name: name});
+      this.namedRoutes.add(method, path, name, []);
       return originalMethod.apply(this, args);
     }
   });
