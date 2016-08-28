@@ -57,6 +57,18 @@ Router.prototype.match = function (req) {
   return false;
 }
 
+var flatten = function (arr, ret) {
+  var ret = ret || [];
+  for (var i = 0, len = arr.length; i < len; ++i) {
+    if (Array.isArray(arr[i])) {
+      flatten(arr[i], ret);
+    } else {
+      ret.push(arr[i]);
+    }
+  }
+  return ret;
+}
+
 /**
  * Registers new route
  * @param method
