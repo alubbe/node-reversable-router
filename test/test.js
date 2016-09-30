@@ -106,6 +106,35 @@ module.exports = {
         expect(routeSpy.callCount).to.equal(1);
         expect(dispatchSpy.called).to.equal(true);
       },
+      'matches (multiple callbacks)': function(){
+        var
+          self = this,
+          dispatchSpy = sinon.spy(),
+          middlewareSpy = sinon.stub(),
+          routeSpy = sinon.spy(),
+          path = '/admin/user/:id',
+          req = {
+            method: 'get',
+            path: '/admin/user/1',
+            params: {}
+          };
+
+        // Call `next` arg inside the spy middleware
+        middlewareSpy.callsArg(2);
+
+        self.router.add('get', path, 'admin.user.edit', [middlewareSpy, routeSpy]);
+
+        self.router.dispatch(req, {}, function(){ });
+
+        // Route should have 2 callbacks
+        expect(self.router.callbacksByPathAndMethod[path].get).to.have.length(2);
+
+        expect(middlewareSpy.calledOnce).to.equal(true);
+        expect(routeSpy.calledOnce).to.equal(true);
+
+        expect(middlewareSpy.calledWith(req, sinon.match.any, sinon.match.any)).to.equal(true);
+        expect(routeSpy.calledWith(req, sinon.match.any, sinon.match.any)).to.equal(true);
+      },
       'optionals': function(){
         var
           self = this,
