@@ -118,7 +118,14 @@ var expressGenerateRoute = function(compile) {
       }
     }
     var routeName = compile(userParams);
-    return foundAtLeastOneNull ? routeName.replace(/\/__NULL_PLACEHOLDER__/g, "") : routeName;
+    if (!foundAtLeastOneNull) return routeName;
+
+    for (var i = 0; i < keys.length; i++) {
+      if (userParams[keys[i]] === "__NULL_PLACEHOLDER__") {
+        userParams[keys[i]] = null;
+      }
+    }
+    return routeName.replace(/\/__NULL_PLACEHOLDER__/g, "");
   }
 }
 

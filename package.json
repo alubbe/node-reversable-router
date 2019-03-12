@@ -14,7 +14,13 @@
     "url": "https://github.com/alubbe/named-routes/issues"
   },
   "keywords": [
-    "named", "routes", "i18n", "router", "reversable", "express", "web"
+    "named",
+    "routes",
+    "i18n",
+    "router",
+    "reversable",
+    "express",
+    "web"
   ],
   "author": {
     "name": "Andreas Lubbe",
