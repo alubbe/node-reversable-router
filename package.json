@@ -1,6 +1,6 @@
 {
   "name": "named-routes",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Named routes for node.js. Works with express and independently",
   "main": "router.js",
   "scripts": {
