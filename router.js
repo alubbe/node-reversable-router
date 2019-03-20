@@ -57,30 +57,39 @@ Router.prototype.match = function (req) {
   return false;
 }
 
+var flatten = function (arr, ret) {
+  var ret = ret || [];
+  for (var i = 0, len = arr.length; i < len; ++i) {
+    if (Array.isArray(arr[i])) {
+      flatten(arr[i], ret);
+    } else {
+      ret.push(arr[i]);
+    }
+  }
+  return ret;
+}
+
 /**
  * Registers new route
  * @param method
  * @param path
- * @param callbacks
- * @param options
+ * @param callback
  */
-Router.prototype.add = function (method, path, callbacks, options) {
-  function flatten(arr, ret) {
-    var ret = ret || []
-      , len = arr.length;
-    for (var i = 0; i < len; ++i) {
-      if (Array.isArray(arr[i])) {
-        flatten(arr[i], ret);
-      } else {
-        ret.push(arr[i]);
-      }
-    }
-    return ret;
-  }
+Router.prototype.add = function (method, path, callback) {
+  var hasOptions = (typeof callback !== 'function' && !Array.isArray(callback));
+  var callbacks = [].slice.call(arguments, 2);
+  var options = {};
 
-  callbacks = [callbacks]
   method = method.toLowerCase();
-  options = options || {};
+
+  if (hasOptions) {
+    if (typeof callback === 'string') {
+      options['name'] = callback;
+    } else {
+      options = callback;
+    }
+    callbacks.shift();
+  }
 
   this.routesByMethodAndPath[method] = this.routesByMethodAndPath[method] || {};
   options.caseSensitive = options.caseSensitive == undefined ? this.caseSensitive : options.caseSensitive;
@@ -318,7 +327,7 @@ Router.prototype.extendExpress = function (app) {
           next();
         };
       }
-      this.namedRoutes.add(method, path, [], {name: name});
+      this.namedRoutes.add(method, path, name, []);
       return originalMethod.apply(this, args);
     }
   });

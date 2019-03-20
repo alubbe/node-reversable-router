@@ -92,9 +92,7 @@ module.exports = {
             params: {}
           };
 
-        self.router.add('get', '/admin/user/:id', routeSpy, {
-            name: 'admin.user.edit'
-        });
+        self.router.add('get', '/admin/user/:id', 'admin.user.edit', routeSpy);
 
         self.router.dispatch(req, {}, function(){ });
 
@@ -107,6 +105,35 @@ module.exports = {
 
         expect(routeSpy.callCount).to.equal(1);
         expect(dispatchSpy.called).to.equal(true);
+      },
+      'matches (multiple callbacks)': function(){
+        var
+          self = this,
+          dispatchSpy = sinon.spy(),
+          middlewareSpy = sinon.stub(),
+          routeSpy = sinon.spy(),
+          path = '/admin/user/:id',
+          req = {
+            method: 'get',
+            path: '/admin/user/1',
+            params: {}
+          };
+
+        // Call `next` arg inside the spy middleware
+        middlewareSpy.callsArg(2);
+
+        self.router.add('get', path, 'admin.user.edit', [middlewareSpy, routeSpy]);
+
+        self.router.dispatch(req, {}, function(){ });
+
+        // Route should have 2 callbacks
+        expect(self.router.callbacksByPathAndMethod[path].get).to.have.length(2);
+
+        expect(middlewareSpy.calledOnce).to.equal(true);
+        expect(routeSpy.calledOnce).to.equal(true);
+
+        expect(middlewareSpy.calledWith(req, sinon.match.any, sinon.match.any)).to.equal(true);
+        expect(routeSpy.calledWith(req, sinon.match.any, sinon.match.any)).to.equal(true);
       },
       'optionals': function(){
         var
@@ -151,9 +178,7 @@ module.exports = {
           this.router.build('invalid route Name');
         }).to.throwError();
 
-        self.router.add('post', '(/:controller(/:action(/:id)))', spy, {
-          'name': 'reversed'
-        });
+        self.router.add('post', '(/:controller(/:action(/:id)))', 'reversed', spy);
 
         expect(self.router.build('reversed', {
           'controller': 'Home',
@@ -167,9 +192,7 @@ module.exports = {
 
         expect(spy.called).to.equal(true);
 
-        self.router.add('post', '/todo/:user/:list/:id', spy, {
-          'name': 'ajax'
-        });
+        self.router.add('post', '/todo/:user/:list/:id', 'ajax', spy);
 
         expect(self.router.build('ajax', {
           'user': 'foo',
@@ -177,9 +200,7 @@ module.exports = {
           'id': null
         })).to.equal('/todo/foo');
 
-        self.router.add('get', '/admin/(user/(edit/:id/)(album/:albumId/):session/)test', spy, {
-          name: 'optionals'
-        });
+        self.router.add('get', '/admin/(user/(edit/:id/)(album/:albumId/):session/)test', 'optionals', spy);
 
         expect(self.router.build('optionals', {
           id: 4,
@@ -211,9 +232,7 @@ module.exports = {
           next = sinon.spy(),
           spy = sinon.spy();
 
-        self.router.add('get', '/admin/*/user/*/:id', spy, {
-          name: 'admin.user.edit'
-        });
+        self.router.add('get', '/admin/*/user/*/:id', 'admin.user.edit', spy);
 
         req = {
           method: 'get',
@@ -228,10 +247,7 @@ module.exports = {
           id:2, _masked: ['any','thing']
         })).to.equal('/admin/any/user/thing/2');
 
-        self.router.add('get', '/admin/*/user/*/:id/albums/*', spy, {
-          wildcardInPairs: true,
-          name: 'admin.user.edit2'
-        });
+        self.router.add('get', '/admin/*/user/*/:id/albums/*', {wildcardInPairs: true, name: 'admin.user.edit2'}, spy);
 
         req = {
           method: 'get',
